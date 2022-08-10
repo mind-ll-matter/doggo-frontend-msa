@@ -1,3 +1,8 @@
 .capitalize-each-word {
   text-transform: capitalize;
 }
+
+.image-max-size {
+  width: 80%;
+  height: 80%;
+}

@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Form } from 'react-bootstrap';
 import Image from 'react-bootstrap/Image';
+import { DoggoBreedType, DoggoPayload } from './types';
+import { Form, Spinner } from 'react-bootstrap';
+import { titleCase } from '../util/textUtil';
+import { DOGGO_BASE_URI } from '../env';
 
 import './Dashboard.css';
-import { DoggoBreedType, DoggoPayload } from './types';
-import { titleCase } from '../util/textUtil';
 
 const createBreedList = (data: DoggoBreedType) => {
   const allBreeds: string[] = [];
@@ -30,10 +31,8 @@ const Dashboard = () => {
   const [breedList, setBreedList] = useState<Array<string>>([]);
   const [chosenDoggo, setChosenDoggo] = useState<DoggoPayload | null>(null);
 
-  const DOGGO_BASE_URL = "https://dog.ceo/api/";
-
   useEffect(() => {
-    axios.get(DOGGO_BASE_URL + "breeds/list/all").then((res) => {
+    axios.get(DOGGO_BASE_URI + "breeds/list/all").then((res) => {
       setBreedList(createBreedList(res.data.message));
     });
   }, []);
@@ -41,7 +40,7 @@ const Dashboard = () => {
   const handleOnChange = (event: any) => {
     setLoading(true);
 
-    let url = DOGGO_BASE_URL + "breed/"
+    let url = DOGGO_BASE_URI + "breed/"
 
     // If there is a sub-breed, we will get two strings, else we will only get the 1 breed
     const breed = event.target.value.split(" ").reverse();
@@ -55,8 +54,8 @@ const Dashboard = () => {
 
   if (loading) {
     return (
-      <div>
-        Loading...
+      <div className="d-flex m-5 justify-content-center">
+        <Spinner animation="border" variant="secondary" />
       </div>
     )
   }
@@ -81,12 +80,12 @@ const Dashboard = () => {
       </div>
 
       {chosenDoggo &&
-      <div className="d-flex flex-column align-items-center p-3">
-        <Image src={chosenDoggo.message} roundedCircle={true} fluid={true}/>
-        <h3 className="p-5">
-          This is DOGGO
-        </h3>
-      </div>
+        <div className="d-flex flex-column align-items-center p-3">
+          <Image src={chosenDoggo.message} roundedCircle={true} className="image-max-size"/>
+          <h3 className="p-5">
+            This is DOGGO
+          </h3>
+        </div>
       }
     </div>
   )

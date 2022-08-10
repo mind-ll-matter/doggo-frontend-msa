@@ -1,0 +1,1 @@
+export const DOGGO_BASE_URI: string = process.env.REACT_APP_DOG_URI as string;
