@@ -1,0 +1,1 @@
+export const titleCase = (breedName: string) => breedName.split(/ /g).map(word => `${word.substring(0,1).toUpperCase()}${word.substring(1)}`).join(" ");

@@ -3,37 +3,62 @@ import axios from 'axios';
 import { Form } from 'react-bootstrap';
 import Image from 'react-bootstrap/Image';
 
-const createBreedList = (data: any) => {
+import './Dashboard.css';
+import { DoggoBreedType, DoggoPayload } from './types';
+import { titleCase } from '../util/textUtil';
+
+const createBreedList = (data: DoggoBreedType) => {
   const allBreeds: string[] = [];
+
+  // Create a list of strings
+  // Handles singular breeds and breeds with sub-breeds
+  Object.entries(data).forEach(([key, value], i) => {
+    if (value.length !== 0) {
+      value.forEach((subBreed: string) => {
+        allBreeds.push(`${subBreed} ${key}`)
+      });
+    } else {
+      allBreeds.push(key);
+    }
+  });
 
   return allBreeds;
 }
 
-type DoggoPayload = {
-  message: string,
-  status: string,
-}
-
 const Dashboard = () => {
-  const [breedList, setBreedList] = useState([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [breedList, setBreedList] = useState<Array<string>>([]);
   const [chosenDoggo, setChosenDoggo] = useState<DoggoPayload | null>(null);
 
   const DOGGO_BASE_URL = "https://dog.ceo/api/";
 
   useEffect(() => {
     axios.get(DOGGO_BASE_URL + "breeds/list/all").then((res) => {
-      console.log(res.data);
-      console.log(createBreedList(res.data.message))
-      // setChosenDoggo(res.data);
+      setBreedList(createBreedList(res.data.message));
     });
   }, []);
 
   const handleOnChange = (event: any) => {
-    console.log(event.target.value);
-    axios.get(DOGGO_BASE_URL + "breed/" + event.target.value + "/images/random").then((res) => {
-      console.log(res.data);
-      setChosenDoggo(res.data);
-    });
+    setLoading(true);
+
+    let url = DOGGO_BASE_URL + "breed/"
+
+    // If there is a sub-breed, we will get two strings, else we will only get the 1 breed
+    const breed = event.target.value.split(" ").reverse();
+    url = url.concat(breed.join('/'));
+    url = url.concat("/images/random");
+
+    axios.get(url)
+      .then((res) => setChosenDoggo(res.data))
+      .finally(() => setLoading(false));
+  }
+
+  if (loading) {
+    return (
+      <div>
+        Loading...
+      </div>
+    )
   }
 
   return (
@@ -44,9 +69,14 @@ const Dashboard = () => {
       <div className='m-2' style={{ width:"50%" }}>
         <Form.Control as="select" size="lg" aria-label="Default select example" onChange={handleOnChange}>
           <option>Pick a breed!</option>
-          <option value="affenpinscher">affenpinscher</option>
-          <option value="akita">akita</option>
-          <option value="briard">briard</option>
+
+          {breedList &&
+            breedList.map((breed: string, i: any) => {
+              return (
+                <option key={`${breed}-${i}`} value={breed}>{titleCase(breed)}</option>
+              )
+            })
+          }
         </Form.Control>
       </div>
 
