@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import BreedTitle from './BreedTitle';
 import Image from 'react-bootstrap/Image';
 import { DoggoBreedType, DoggoPayload } from './types';
 import { Form, Spinner } from 'react-bootstrap';
@@ -29,6 +30,7 @@ const createBreedList = (data: DoggoBreedType) => {
 const Dashboard = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [breedList, setBreedList] = useState<Array<string>>([]);
+  const [breedName, setBreedName] = useState<string>("");
   const [chosenDoggo, setChosenDoggo] = useState<DoggoPayload | null>(null);
 
   useEffect(() => {
@@ -39,7 +41,7 @@ const Dashboard = () => {
 
   const handleOnChange = (event: any) => {
     setLoading(true);
-
+    setBreedName(event.target.value);
     let url = DOGGO_BASE_URI + "breed/"
 
     // If there is a sub-breed, we will get two strings, else we will only get the 1 breed
@@ -67,7 +69,7 @@ const Dashboard = () => {
       </h1>
       <div className='m-2' style={{ width:"50%" }}>
         <Form.Control as="select" size="lg" aria-label="Default select example" onChange={handleOnChange}>
-          <option>Pick a breed!</option>
+          <option>Pick a breed</option>
 
           {breedList &&
             breedList.map((breed: string, i: any) => {
@@ -81,10 +83,9 @@ const Dashboard = () => {
 
       {chosenDoggo &&
         <div className="d-flex flex-column align-items-center p-3">
+          <BreedTitle name={breedName} />
           <Image src={chosenDoggo.message} roundedCircle={true} className="image-max-size"/>
-          <h3 className="p-5">
-            This is DOGGO
-          </h3>
+          <BreedTitle name={breedName} />
         </div>
       }
     </div>
