@@ -1,0 +1,43 @@
+.hands {
+    width: 250px;
+    height: 250px;
+}
+
+.gapLeft {
+    margin-left: 0.5rem;
+}
+.gapRight{
+    margin-right: 0.5rem;
+}
+
+.hitButton{
+    margin: 10px;
+}
+.passButton{
+    margin: 10px;
+}
+
+.button{
+    width: 100px !important;
+}
+.dealerHand{
+    background-color: red;
+}
+
+.playerHand{
+    background-color: green;
+}
+
+@media screen and (min-width: 1080px) {
+    .hands {
+        width: 450px;
+        height: 450px;
+    }
+  }
+
+  @media screen and (min-width: 720px) {
+    .hands {
+        width: 300px;
+        height: 300px;
+    }
+  }

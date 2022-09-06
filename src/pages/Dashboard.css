@@ -3,6 +3,39 @@
 }
 
 .image-max-size {
-  width: 80%;
-  height: 80%;
+  width: 70%;
+  height: 70%;
+}
+
+.breedTitle {
+  font-size: 1em;
+  text-align: center;
+  padding-top: 2vh;
+  padding-bottom: 2vh;
+}
+
+
+.breedSelect {
+  min-width: 170px;
+  max-width: 400px;
+  width: 50%;
+  font-size: 1.2em
+  
+}
+
+.topTitle {
+  font-size: 1.5em;
+  font-weight: bold;
+  text-align: center;
+  padding-bottom: 1vh
+}
+
+div {
+  font-size: 20px;
+}
+
+@media screen and (min-width: 500px) {
+  .breedTitle br{
+    display: none
+  }
 }

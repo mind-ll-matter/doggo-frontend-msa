@@ -64,10 +64,10 @@ const Dashboard = () => {
 
   return (
     <div className="d-flex p-4 flex-column align-items-center">
-      <h1 className="font-weight-bold">
+      <h1 className="topTitle">
         Search a Doggo
       </h1>
-      <div className='m-2' style={{ width:"50%" }}>
+      <div className='breedSelect'>
         <Form.Control as="select" size="lg" aria-label="Default select example" onChange={handleOnChange}>
           <option>Pick a breed</option>
 
